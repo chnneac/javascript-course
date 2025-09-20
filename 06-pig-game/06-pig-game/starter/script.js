@@ -25,7 +25,13 @@ const init = function () {
   score1El.textContent = 0;
   current0El.textContent = 0;
   current1El.textContent = 0;
+
   diceEl.classList.add('hidden');
+
+  player0El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
+  player0El.classList.add('player--active');
+  player1El.classList.remove('player--active');
 };
 init();
 
@@ -93,7 +99,20 @@ btnHold.addEventListener('click', function () {
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
 
-    switchPlayer();
+    if (scores[activePlayer] >= 100) {
+      playing = false;
+      diceEl.classList.add('hidden');
+
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.add('player--winner');
+
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.remove('player--active');
+    } else {
+      switchPlayer();
+    }
   }
 });
 
@@ -101,5 +120,19 @@ console.log('Scores:', scores);
 console.log('Current Score:', currentScore);
 console.log('Active Player:', activePlayer);
 console.log('Playing:', playing);
+console.log('Player 0 winner:', player0El.classList.contains('player--winner'));
+console.log('Player 1 winner:', player1El.classList.contains('player--winner'));
 console.log('Player 0 active:', player0El.classList.contains('player--active'));
 console.log('Player 1 active:', player1El.classList.contains('player--active'));
+
+console.log('Current scores:', scores);
+console.log('Win condition met:', scores[activePlayer] >= 100);
+console.log('Game playing:', playing);
+
+const btnNew = document.querySelector('.btn--new');
+
+btnNew.addEventListener('click', init);
+
+console.log('Game reset - scores:', scores);
+console.log('Game reset - playing:', playing);
+console.log('Game reset - active player:', activePlayer);
